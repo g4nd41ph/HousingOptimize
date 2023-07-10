@@ -73,35 +73,35 @@ namespace HousingOptimize
                 //Iterate through all the workplaces and put their workers back in their houses starting with the closest houses first
                 foreach (Workplace workplace in workplaces)
                 {
-                    //Get the entrance position
+                    //Get the list of distances from this workplace to each house
                     Accessible workplaceAccessible = workplace.GetComponentFast<Accessible>();
+                    List<DwellingDistanceData> distances = new List<DwellingDistanceData>();
+                    foreach (Dwelling dwelling in dwellings)
+                    {
+                        float currentDistance = 0;
+                        workplaceAccessible.FindRoadPath(dwelling.GetComponentFast<Accessible>().Accesses[0], out currentDistance);
+                        distances.Add(new DwellingDistanceData(dwelling, currentDistance));
+                    }
+                    distances.Sort();
 
                     //Assign each worker to the closest available house
                     foreach (Worker worker in workplace.AssignedWorkers)
                     {
-                        //Find the closest house
-                        float currentDistance = 0;
-                        float minDistance = float.MaxValue;
-                        Dwelling closestDwelling = null;
-                        foreach (Dwelling dwelling in dwellings)
+                        //Make sure that this worker is not a bot, since bots cannot be in houses
+                        Dweller dweller = worker.GetComponentFast<Dweller>();
+                        if (dweller == null)
                         {
-                            //Compute distance
-                            Accessible dwellingAccessible = dwelling.GetComponentFast<Accessible>();
-                            workplaceAccessible.FindRoadPath(dwellingAccessible.Accesses[0], out currentDistance);
-
-                            //Check against current minimum
-                            if (currentDistance < minDistance && dwelling.HasFreeSlots)
-                            {
-                                minDistance = currentDistance;
-                                closestDwelling = dwelling;
-                            }
+                            continue;
                         }
 
                         //Assign this beaver to the closest valid house
-                        Dweller dweller = worker.GetComponentFast<Dweller>();
-                        if (closestDwelling != null && dweller != null)
+                        foreach (DwellingDistanceData distance in distances)
                         {
-                            closestDwelling.AssignDweller(dweller);
+                            if (distance.Dwelling.HasFreeSlots)
+                            {
+                                distance.Dwelling.AssignDweller(dweller);
+                                break;
+                            }
                         }
                     }
                 }
