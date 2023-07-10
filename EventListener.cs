@@ -120,6 +120,7 @@ namespace HousingOptimize
                             if (dwelling.HasFreeSlots)
                             {
                                 dwelling.AssignDweller(dweller);
+                                break;
                             }
                         }
                     }
