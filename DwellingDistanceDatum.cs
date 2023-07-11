@@ -3,14 +3,14 @@ using Timberborn.DwellingSystem;
 
 namespace HousingOptimize
 {
-    public class DwellingDistanceData : IComparable
+    public class DwellingDistanceDatum : IComparable
     {
         //Members
         private Dwelling dwelling;
         private float distance;
 
         //Constructor
-        public DwellingDistanceData(Dwelling inDwelling, float inDistance)
+        public DwellingDistanceDatum(Dwelling inDwelling, float inDistance)
         {
             dwelling = inDwelling;
             distance = inDistance;
@@ -22,7 +22,7 @@ namespace HousingOptimize
             try
             {
                 //Cast
-                DwellingDistanceData comparison = (DwellingDistanceData)other;
+                DwellingDistanceDatum comparison = (DwellingDistanceDatum)other;
 
                 //Do comparison basd on distance
                 return this.Distance.CompareTo(comparison.Distance);
