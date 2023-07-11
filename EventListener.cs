@@ -68,6 +68,7 @@ namespace HousingOptimize
                 foreach (Dwelling dwelling in dwellings)
                 {
                     dwelling.UnassignAllDwellers();
+                    File.AppendAllText("C:\\Users\\Scott Tritten\\Desktop\\Test.log", dwelling.TotalSlots + " " + dwelling.AdultSlots + " " + dwelling.ChildSlots + " " + dwelling.FreeAdultSlots + "\r\n");
                 }
 
                 //Iterate through all the workplaces and put their workers back in their houses starting with the closest houses first
@@ -119,7 +120,7 @@ namespace HousingOptimize
             //Use adult slots first
             foreach (DwellingDistanceDatum distance in distances)
             {
-                if (distance.Dwelling.FreeAdultSlots > 0)
+                if (distance.Dwelling.FreeAdultSlots > 0 && distance.Dwelling.HasFreeSlots)
                 {
                     distance.Dwelling.AssignDweller(dweller);
                     return;
@@ -142,7 +143,7 @@ namespace HousingOptimize
             //Use adult slots first
             foreach (Dwelling dwelling in dwellings)
             {
-                if (dwelling.FreeAdultSlots > 0)
+                if (dwelling.FreeAdultSlots > 0 && dwelling.HasFreeSlots)
                 {
                     dwelling.AssignDweller(dweller);
                     return;
