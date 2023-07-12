@@ -68,7 +68,6 @@ namespace HousingOptimize
                 foreach (Dwelling dwelling in dwellings)
                 {
                     dwelling.UnassignAllDwellers();
-                    File.AppendAllText("C:\\Users\\Scott Tritten\\Desktop\\Test.log", dwelling.TotalSlots + " " + dwelling.AdultSlots + " " + dwelling.ChildSlots + " " + dwelling.FreeAdultSlots + "\r\n");
                 }
 
                 //Iterate through all the workplaces and put their workers back in their houses starting with the closest houses first
